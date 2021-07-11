@@ -14,6 +14,7 @@
 		5AA5ED2F2696ED3A00160C4A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5AA5ED2E2696ED3A00160C4A /* Assets.xcassets */; };
 		5AA5ED322696ED3A00160C4A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5AA5ED302696ED3A00160C4A /* LaunchScreen.storyboard */; };
 		5AA5ED352696ED3A00160C4A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 5AA5ED342696ED3A00160C4A /* main.m */; };
+		5AF5D71F26981D8C00651C7A /* LFLAccountTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 5AF5D71E26981D8C00651C7A /* LFLAccountTool.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -27,6 +28,8 @@
 		5AA5ED312696ED3A00160C4A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		5AA5ED332696ED3A00160C4A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		5AA5ED342696ED3A00160C4A /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		5AF5D71D26981D8C00651C7A /* LFLAccountTool.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LFLAccountTool.h; sourceTree = "<group>"; };
+		5AF5D71E26981D8C00651C7A /* LFLAccountTool.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LFLAccountTool.m; sourceTree = "<group>"; };
 		634CFAAA19F546B7D754F1CD /* Pods-Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Example.release.xcconfig"; path = "Target Support Files/Pods-Example/Pods-Example.release.xcconfig"; sourceTree = "<group>"; };
 		82F4E796BA4155CEEF38D616 /* Pods_Example.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Example.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B66E77B2786ECBCA4A946D67 /* Pods-Example.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Example.debug.xcconfig"; path = "Target Support Files/Pods-Example/Pods-Example.debug.xcconfig"; sourceTree = "<group>"; };
@@ -75,6 +78,8 @@
 			children = (
 				5AA5ED222696ED3A00160C4A /* AppDelegate.h */,
 				5AA5ED232696ED3A00160C4A /* AppDelegate.m */,
+				5AF5D71D26981D8C00651C7A /* LFLAccountTool.h */,
+				5AF5D71E26981D8C00651C7A /* LFLAccountTool.m */,
 				5AA5ED282696ED3A00160C4A /* ViewController.h */,
 				5AA5ED292696ED3A00160C4A /* ViewController.m */,
 				5AA5ED2B2696ED3A00160C4A /* Main.storyboard */,
@@ -208,6 +213,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5AF5D71F26981D8C00651C7A /* LFLAccountTool.m in Sources */,
 				5AA5ED2A2696ED3A00160C4A /* ViewController.m in Sources */,
 				5AA5ED242696ED3A00160C4A /* AppDelegate.m in Sources */,
 				5AA5ED352696ED3A00160C4A /* main.m in Sources */,
