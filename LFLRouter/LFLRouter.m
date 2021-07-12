@@ -14,28 +14,31 @@
         return nil;
     } else {
         NSURL *url = [[NSURL alloc]initWithString:URLString];
-        NSLog(@"query参数%@",url.query);
-        [self parsingURLString:url];
-        return @"PlaceString";
+        if (url) {
+            return [self parsingURLString:url];
+        } else {
+            NSAssert(YES, @"不符合URL规范");
+            return nil;
+        }
     }
 }
 
-+ (void)parsingURLString:(nullable NSURL *)URLString {
-    
++ (id)parsingURLString:(nullable NSURL *)URLString {
+    NSLog(@"query参数【%@】",URLString.query);
     Class runClass = NSClassFromString(@"LFLAccountTool");
     
-    SEL selector = NSSelectorFromString([NSString stringWithFormat:@"testFunctionWithName:headerImage:email:"]);
+    SEL selector = NSSelectorFromString([NSString stringWithFormat:@"testFunctionWithName:headerImage:"]);
     
     NSMethodSignature *signature = [runClass methodSignatureForSelector:selector]; //
     if (!signature) {
-        NSLog(@"实例函数");
+        NSLog(@"此URL解析为示实例函数");
         signature = [runClass instanceMethodSignatureForSelector:selector];
     } else {
-        NSLog(@"类函数");
+        NSLog(@"此URL解析为类函数");
     }
     if (!signature) {
-        NSLog(@"不存在执行体");
-        return;
+        NSAssert(YES, @"不存在执行函数体");
+        return nil;
     }
     
     NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:signature];
@@ -45,23 +48,34 @@
     
     NSString *name = @"DevDragonLi";
     UIImage *image = [UIImage new];
-    NSString *email = @"DragonLi@88.com";
+    
     
     [invocation setArgument:&name atIndex:2];
     [invocation setArgument:&image atIndex:3];
-    [invocation setArgument:&email atIndex:4];
+    
+    
+//    NSString *email = @"DragonLi@88.com";
+//    [invocation setArgument:&email atIndex:4];
     
     [invocation retainArguments];
     
     [invocation invoke];
     
-    //    [invocation getReturnValue:nil];
+    const char *returnType = [signature methodReturnType];
     
+    if (strcmp(returnType, @encode(void)) == 0) {
+        
+        return nil;
+    } else {
+        
+        id returnValue = nil;
+        [invocation getReturnValue:&returnValue];
+        return returnValue;
+    }
 }
 
 + (void)openURLString:(nullable NSString *)URLString
            parameters:(void (^)(void))parameters {
-    
 }
 
 @end

@@ -12,10 +12,13 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface LFLAccountTool : NSObject
 
-// Test function
+/// Test function  Return
 + (NSString *)testFunctionWithName:(NSString *)name
                        headerImage:(UIImage *)headerImage
                              email:(NSString *)email;
+/// Test function  void Type 
++ (void)testFunctionWithName:(NSString *)name
+                 headerImage:(UIImage *)headerImage;
 
 @end
 
