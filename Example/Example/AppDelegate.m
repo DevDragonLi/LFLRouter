@@ -7,7 +7,7 @@
 
 #import "AppDelegate.h"
 #import "ViewController.h"
-
+#import "LFLAccountTool.h"
 #import <LFLRouter/LFLRouter.h>
 
 @interface AppDelegate ()
@@ -25,10 +25,15 @@
 }
 
 - (void)testFunction {
+    
     /**
      * 实际Scheme中可能为【LFLAccountTool 为具体组件实现类】，但是scheme是account而已，这个不用太关注，后续可以桥接配置组件内实现转化
      */
-    [LFLRouter openURLString:@"LFL://usr/openuserinfo/?name=lfl&age=18"];
+    
+    NSString *testString = @"LFL://usr/openuserinfo?name=lfl&age=DragonLi";
+    [[LFLRouter sharedManger] configModuleWithKey:@"openuserinfo" value:@"LFLAccountTool"];
+    
+    NSLog(@"Router Result %@",[[LFLRouter sharedManger] openURLString:testString]);
 }
 
 

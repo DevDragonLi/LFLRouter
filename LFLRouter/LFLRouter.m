@@ -6,38 +6,97 @@
 
 #import "LFLRouter.h"
 
+@interface LFLRouter ()
+
+@property (nonatomic,strong,nullable) NSMutableDictionary <NSString * , NSString * > * mapDics;
+
+@end
+
 @implementation LFLRouter
 
-+ (nullable id)openURLString:(nullable NSString *)URLString {
-    if (!URLString && ![URLString isKindOfClass:NSString.class]) {
-        NSAssert(YES, @"URLString Error");
++ (instancetype)sharedManger {
+    static dispatch_once_t once;
+    static LFLRouter *sharedManger;
+    dispatch_once(&once, ^{
+        sharedManger = [[[self class] alloc] init];
+        sharedManger.mapDics = [NSMutableDictionary dictionaryWithCapacity:1024];
+    });
+    return sharedManger;
+}
+
+- (nullable id)openURLString:(nullable NSString *)URLString {
+    
+    if (!URLString || ![URLString isKindOfClass:NSString.class]) {
+        NSAssert(NO, @"openURLString Error,Please Check This Parameter");
         return nil;
     } else {
         NSURL *url = [[NSURL alloc]initWithString:URLString];
-        if (url) {
+        
+        if (url && [url isKindOfClass:NSURL.class]) {
+            
             return [self parsingURLString:url];
         } else {
-            NSAssert(YES, @"不符合URL规范");
+            NSAssert(NO, @"Error URL parameter");
             return nil;
         }
     }
 }
 
-+ (id)parsingURLString:(nullable NSURL *)URLString {
-    NSLog(@"query参数【%@】",URLString.query);
-    Class runClass = NSClassFromString(@"LFLAccountTool");
+- (id)exception {
+    NSAssert(NO, @"Error URL parameter");
+    return nil;
+}
+
+
+- (id)parsingURLString:(nullable NSURL *)URLString {
     
-    SEL selector = NSSelectorFromString([NSString stringWithFormat:@"testFunctionWithName:headerImage:"]);
+    NSString *absoluteString = URLString.absoluteString;
+    if (absoluteString == nil) {
+        return [self exception];
+    }
+    /// 针对不同诉求，此处可自定义调整
+    NSString *bussinessClsString = URLString.path.lastPathComponent; //pathComponents;
+    NSURLComponents *urlComponents = [[NSURLComponents alloc] initWithString:URLString.absoluteString];
+    
+    if (!bussinessClsString || !urlComponents.queryItems.count) {
+        return [self exception];
+    }
+    
+    if ([self.mapDics objectForKey:bussinessClsString]) {
+        bussinessClsString = [self.mapDics objectForKey:bussinessClsString];
+    }
+    
+    NSMutableDictionary *queryParams = [[NSMutableDictionary alloc] init];
+    
+    __block NSString *selString = [NSString string];
+    
+    [urlComponents.queryItems enumerateObjectsUsingBlock:^(NSURLQueryItem * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        if (obj.value && obj.name) {
+            [queryParams setObject:obj.value forKey:obj.name];
+            if (selString.length == 0) {
+                selString = [selString stringByAppendingString:obj.name];
+            } else {
+                selString = [selString stringByAppendingFormat:@"%@", [NSString stringWithFormat:@":%@",obj.name]];
+            }
+        }
+    }];
+    
+    selString = [NSString stringWithFormat:@"%@:",selString];
+    
+    Class runClass = NSClassFromString(bussinessClsString);
+    SEL selector = NSSelectorFromString(selString);
+    
+    if (!runClass || !selector) {
+        return [self exception];
+    }
     
     NSMethodSignature *signature = [runClass methodSignatureForSelector:selector]; //
     if (!signature) {
-        NSLog(@"此URL解析为示实例函数");
         signature = [runClass instanceMethodSignatureForSelector:selector];
-    } else {
-        NSLog(@"此URL解析为类函数");
     }
+    
     if (!signature) {
-        NSAssert(YES, @"不存在执行函数体");
+        NSAssert2(NO, @"%@:%@ UnFound", bussinessClsString, selString);
         return nil;
     }
     
@@ -46,16 +105,13 @@
     [invocation setSelector:selector];
     [invocation setTarget:runClass];
     
-    NSString *name = @"DevDragonLi";
-    UIImage *image = [UIImage new];
-    
-    
-    [invocation setArgument:&name atIndex:2];
-    [invocation setArgument:&image atIndex:3];
-    
-    
-//    NSString *email = @"DragonLi@88.com";
-//    [invocation setArgument:&email atIndex:4];
+    [urlComponents.queryItems enumerateObjectsUsingBlock:^(NSURLQueryItem * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        if (obj.value && obj.name) {
+            id value = obj.value;
+            NSInteger index = 2 + idx;
+            [invocation setArgument:&value atIndex: index];
+        }
+    }];
     
     [invocation retainArguments];
     
@@ -66,6 +122,7 @@
     if (strcmp(returnType, @encode(void)) == 0) {
         
         return nil;
+        
     } else {
         
         id returnValue = nil;
@@ -74,8 +131,28 @@
     }
 }
 
-+ (void)openURLString:(nullable NSString *)URLString
+- (void)openURLString:(nullable NSString *)URLString
            parameters:(void (^)(void))parameters {
+    
 }
+
+
+- (void)configModuleWithKey:(nullable NSString *)key
+                      value:(nullable NSString *)value {
+    
+    if (key && value) {
+        [self.mapDics setValue:value forKey:key];
+    }
+}
+
+/**
+ * Config ref class
+ */
+- (void)buildMaps:(nullable NSDictionary *)maps {
+    if (maps) {
+        [self.mapDics addEntriesFromDictionary:maps];
+    }
+}
+
 
 @end

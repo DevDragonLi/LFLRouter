@@ -20,6 +20,10 @@ NS_ASSUME_NONNULL_BEGIN
 + (void)testFunctionWithName:(NSString *)name
                  headerImage:(UIImage *)headerImage;
 
+/// Test function  void Type
++ (void)testBlock:(NSString *)name
+                 block:(void (^)(NSString *test,NSString *test2))block;
+
 @end
 
 NS_ASSUME_NONNULL_END

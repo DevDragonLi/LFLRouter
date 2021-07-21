@@ -14,16 +14,29 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface LFLRouter : NSObject
 
++ (instancetype)sharedManger;
+
 /** AnyClass Object Funcation
  *  Example: input a URL ,return AnyClass Object immediate
  */
-+ (nullable id)openURLString:(nullable NSString *)URLString;
+- (nullable id)openURLString:(nullable NSString *)URLString;
 
 /** AnyClass Object Funcation
  *  Example: input a URL ,return AnyClass Object wait result in Block
  */
-+ (void)openURLString:(nullable NSString *)URLString
+- (void)openURLString:(nullable NSString *)URLString
            parameters:(void (^)(void))parameters;
+
+/**
+ * Config ref class
+ */
+- (void)configModuleWithKey:(nullable NSString *)key
+                               value:(nullable NSString *)value;
+
+/**
+ * Config ref class
+ */
+- (void)buildMaps:(nullable NSDictionary *)maps;
 
 @end
 
